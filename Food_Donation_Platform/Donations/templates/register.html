@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - FoodConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      height: 100vh;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      width: 750px;
+      max-width: 90%;
+      backdrop-filter: blur(12px);
+      background-color: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .left-panel {
+      flex: 1;
+      padding: 30px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .left-panel h1 {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+
+    .left-panel p {
+      font-size: 15px;
+    }
+
+    .right-panel {
+      flex: 1.2;
+      padding: 30px;
+      color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 10px;
+      background: transparent;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      color: #fff; /* Set text color to white */
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-group label {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      color: #aaa;
+      pointer-events: none;
+      transition: 0.3s ease all;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label,
+    .input-group select:focus + label,
+    .input-group select:not([value=""]) + label {
+      top: -10px;
+      left: 8px;
+      font-size: 12px;
+      color: #00e676;
+    }
+
+    #subRoleDiv {
+      margin-top: 10px;
+    }
+
+    .radio-group {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      accent-color: #00e676;
+      width: 16px;
+      height: 16px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: #00e676;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background: #00c853;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .login-link a {
+      color: #00e676;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error-msg {
+      color: #ff5252;
+      font-size: 13px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: transparent;
+      color: #fff; /* Make select options text white */
+    }
+  </style>
+</head>
+<body>
+  {% for message in messages %}
+  <p class="text-danger font-weight-bold" style="color: #fff;">{{ message }}</p>
+  {% endfor %}
+    
+  <div class="container">
+    <div class="left-panel">
+      <h1>Welcome to FoodConnect</h1>
+      <p>Join us in reducing food waste and helping communities. Register now as a donor or recipient!</p>
+    </div>
+
+    <div class="right-panel">
+      <h2>Create Account</h2>
+      <form method="post" action="{% url 'register' %}" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <div class="input-group">
+          <input type="text" name="name" required placeholder=" " />
+          <label>Name</label>
+        </div>
+        <div class="input-group">
+          <input type="email" name="email" required placeholder=" " />
+          <label>Email</label>
+        </div>
+
+        <div class="input-group">
+          <input type="text" name="phone" required placeholder=" " />
+          <label>Phone</label>
+        </div>
+
+        <div class="input-group">
+          <input type="text" name="address" required placeholder=" " />
+          <label>Address</label>
+        </div>
+
+        <div class="input-group">
+          <input type="text" name="username" required placeholder=" " />
+          <label>Username</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" name="password" id="password" required placeholder=" " />
+          <label>Password</label>
+        </div>
+
+        <div class="input-group">
+          <input type="password" name="confirm_password" id="confirm_password" required placeholder=" " />
+          <label>Confirm Password</label>
+        </div>
+
+        <p id="passwordError" class="error-msg">Passwords do not match!</p>
+
+        <div class="input-group">
+          <select name="role" id="role" onchange="toggleSubRole()">
+            <option value="donor">Donor</option>
+            <option value="recipient">Recipient</option>
+          </select>
+          <label>Role</label>
+        </div>
+
+        <div id="subRoleDiv" class="radio-group">
+          <label><input type="radio" name="sub_role" value="individual" required> Individual</label>
+          <label><input type="radio" name="sub_role" value="restaurant"> Restaurant</label>
+          <label><input type="radio" name="sub_role" value="grocery"> Grocery Store</label>
+        </div>
+
+        <input type="submit" value="Register">
+
+        <div class="login-link">
+          Already have an account? <a href="{% url 'login' %}">Login</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleSubRole() {
+      const role = document.getElementById("role").value;
+      const subRoleDiv = document.getElementById("subRoleDiv");
+      const radios = document.getElementsByName("sub_role");
+
+      if (role === "donor") {
+        subRoleDiv.style.display = "flex";
+        radios.forEach(radio => {
+          radio.required = true;
+        });
+      } else {
+        subRoleDiv.style.display = "none";
+        radios.forEach(radio => {
+          radio.required = false;
+          radio.checked = false;  // optional: clear selection
+        });
+      }
+    }
+
+    // Call on load to apply logic if pre-filled
+    window.onload = toggleSubRole;
+
+    function validateForm() {
+      const pass = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm_password").value;
+      const errorMsg = document.getElementById("passwordError");
+
+      if (pass !== confirm) {
+        errorMsg.style.display = "block";
+        return false;
+      }
+      errorMsg.style.display = "none";
+      return true;
+    }
+
+    toggleSubRole();
+  </script>
+</body>
+</html>

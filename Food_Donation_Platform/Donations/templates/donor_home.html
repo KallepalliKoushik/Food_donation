@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FoodConnect | Donor Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #121212;
+      color: #f5f5f5;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.08;
+      z-index: -1;
+    }
+
+    .accent {
+      color: #8e2de2;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #1e1e1e;
+      color: #fff;
+      padding: 30px 20px;
+      position: fixed;
+      height: 100%;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    }
+
+    .sidebar h2 {
+      margin-bottom: 40px;
+      font-size: 24px;
+      text-align: center;
+      color: #8e2de2;
+    }
+
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      margin: 20px 0;
+      font-weight: 500;
+      transition: background 0.3s;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .sidebar a:hover {
+      background: rgba(142, 45, 226, 0.3);
+    }
+
+    .main {
+      margin-left: 260px;
+      padding: 40px;
+    }
+
+    .card {
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 15px rgba(142, 45, 226, 0.15);
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      color: #8e2de2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #e0e0e0;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      background: #222;
+      color: #fff;
+    }
+
+    input[type="submit"] {
+      background: #8e2de2;
+      color: white;
+      border: none;
+      padding: 12px;
+      margin-top: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background: #6a0dad;
+    }
+
+    .preview {
+      margin-top: 10px;
+    }
+
+    .preview img {
+      max-width: 180px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      display: block;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #444;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background: #8e2de2;
+      color: white;
+    }
+
+    td {
+      background-color: #222;
+    }
+
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      input, select {
+        font-size: 16px;
+      }
+
+      input[type="submit"] {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>FoodConnect</h2>
+    <a onclick="showTab('donate')"><i class="fas fa-plus"></i> Add Donation</a>
+    <a href="{% url 'recent_donations' %}"><i class="fas fa-sign-out-alt"></i> Recent Donations</a>
+    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <div class="main">
+    <!-- Donation Form -->
+    <div class="card tab-content active" id="donate">
+      <h2><i class="fas fa-hand-holding-heart"></i> Submit a Donation</h2>
+      <form method="post" action="{% url 'donor_home' %}" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        <label for="food_name">Food Name:</label>
+        <input type="text" name="food_name" id="food_name" required>
+
+        <label for="quantity">Quantity:</label>
+        <input type="text" name="quantity" id="quantity" required>
+
+        <label for="expiry_date">Expiry Date:</label>
+        <input type="date" name="expiry_date" id="expiry_date" required>
+
+        <label for="pickup_window">Pickup Window:</label>
+        <input type="text" name="pickup_window" id="pickup_window" required>
+
+
+        <label for="food_image">Upload Food Image:</label>
+        <input type="file" name="food_image" id="food_image" accept="image/*" onchange="previewImage(event)">
+        <div class="preview">
+          <img id="preview" src="#" alt="Preview" style="display:none;" />
+        </div>
+
+        <input type="submit" value="Submit Donation">
+      </form>
+    </div>
+
+   
+
+  <script>
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const output = document.getElementById('preview');
+        output.src = reader.result;
+        output.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+</body>
+</html>

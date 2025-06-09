@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #28a745;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        a:hover {
+            background-color: #218838;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+        .booking-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Booking Confirmation</h2>
+
+        <div class="booking-info">
+            <p><span class="label">Food Item:</span> {{ item.food_name }}</p>
+            <p><span class="label">Remaining Quantity:</span> {{ item.quantity }}</p>
+            <p><span class="label">Recipient Name:</span> {{ booking.recipient_name }}</p>
+            <p><span class="label">Location:</span> {{ booking.recipient_location }}</p>
+            <p><span class="label">Phone:</span> {{ booking.phone }}</p>
+            <p><span class="label">Quantity Booked:</span> {{ booking.quantity }}</p>
+        </div>
+
+        <p>✅ Thank you for your booking!</p>
+        
+        <a href="{% url 'recipient_home' %}">Back to Dashboard</a>
+    </div>
+</body>
+</html>

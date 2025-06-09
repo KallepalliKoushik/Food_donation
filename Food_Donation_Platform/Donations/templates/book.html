@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Order</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                        url("/static/images/booking2.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 450px; /* Reduced form width */
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2); /* Slightly darker background */
+            backdrop-filter: blur(10px); /* Slight blur effect */
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #00e676;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .food-details {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .food-details h3 {
+            font-size: 18px;
+            color: #fff;
+            margin: 10px 0;
+        }
+
+        input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus {
+            border-color: #00e676;
+            outline: none;
+        }
+
+        input[type="submit"] {
+            background-color: #00e676;
+            color: #000;
+            border: none;
+            padding: 14px 0;
+            width: 100%;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #00c853;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            color: #ccc;
+            text-align: center;
+        }
+
+        a {
+            color: #00e676;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        .message {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                max-width: 90%;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% for message in messages %}
+    <p class="text-danger font-weight-bold">{{ message }}</p>
+  {% endfor %}
+
+    <div class="container">
+        <h2>Booking Confirmation</h2>
+        <form method="post" action="{% url 'book' item.id %}">
+            {% csrf_token %}
+            <div class="food-details">
+                <h3><strong>Food Item:</strong> {{ item.food_name }}</h3>
+                <h3><strong>Available Quantity:</strong> {{ item.quantity }}</h3>
+            </div>
+
+            <label for="recipient_name">Your Name:</label>
+            <input type="text" name="recipient_name" required>
+
+            <label for="recipient_location">Delivery Address:</label>
+            <input type="text" name="recipient_location" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="text" name="quantity" required>
+
+            <input type="submit" value="Confirm Booking">
+        </form>
+
+        <p>Go back to <a href="{% url 'recipient_home' %}">Recipient Home</a></p>
+    </div>
+
+    <footer>
+        <p>© 2025 Food Connect. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

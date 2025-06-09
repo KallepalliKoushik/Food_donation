@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoodConnect | Donations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+  font-family: 'Poppins', sans-serif;
+  background: none;
+  color: #fff;
+  position: relative;
+  padding-top: 80px;
+  overflow-x: hidden;
+}
+
+/* Pseudo-element with dark overlay and background image */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url("https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80") no-repeat center center fixed;
+  background-size: cover;
+  opacity: 1;
+  z-index: -1;
+}
+
+
+
+
+    /* === Header with Glassmorphism === */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #f7c5c5;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    .navbar-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .navbar-toggle span {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
+
+    /* === Blog Cards === */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .blog {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .blog:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #ffdbdb;
+    }
+
+    .blog img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .blog h3 {
+      font-size: 15px;
+      font-weight: 400;
+      margin: 8px 0;
+      color: #ddd;
+    }
+
+    footer {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    footer a {
+      color: #ffb5b5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      .navbar-toggle {
+        display: flex;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 200px;
+        padding: 20px;
+        border-radius: 0 0 0 10px;
+      }
+
+      nav.active {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="logo">FoodConnect</a>
+    <button class="navbar-toggle" onclick="toggleNavbar()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav id="navbar-collapse">
+      <a href="{% url 'donor_home' %}">Dashboard</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Donation Cards -->
+  <section class="container">
+    {% for item in items %}
+    <div class="blog">
+      <h2>{{ item.food_name }}</h2>
+      {% if item.food_image %}
+        <img src="{{ item.food_image.url }}" alt="Food Image" />
+      {% else %}
+        <img src="{% static 'images/default-image.jpg' %}" alt="Default Image" />
+      {% endif %}
+      <h3>Quantity: {{ item.quantity }}</h3>
+      <h3>Pickup Window: {{ item.pickup_window }}</h3>
+      <h3>expiry_date: {{item.expiry_date}}</h3>
+    </div>
+    {% empty %}
+    <p>No donations found.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Go back to <a href="{% url 'donor_home' %}">Donor Dashboard</a></p>
+  </footer>
+
+  <!-- Navbar Toggle Script -->
+  <script>
+    function toggleNavbar() {
+      const nav = document.getElementById('navbar-collapse');
+      nav.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
